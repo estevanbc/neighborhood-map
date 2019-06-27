@@ -1,33 +1,43 @@
 .App {
-  text-align: center;
+  text-align: left;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
+p {
+  margin: 5px 0px;  
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.marker {
+  background: #2285d0;
+  border-radius: 20px;
+  width: 36px;
+  height: 36px;
+  padding: 4px;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px !important;
 }
 
-.App-link {
-  color: #61dafb;
+.marker:hover {
+  cursor: pointer;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.marker-active {
+  transform-origin: 50% 50%;
+  animation: jump .3s linear alternate infinite;
+  background: #b9ab3f;
+}
+
+.Menu-Toggle {
+  position: absolute;
+  left: 0;
+  margin: 10px !important;
+  z-index: 1;
+  background-color: #fff !important;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px !important;
+  border-radius: 2px !important;
+  height: 40px;
+  width: 40px;
+}
+
+@keyframes jump {
+  0%   {transform: translate3d(0,0,0) scale3d(1,1,1);}
+  100% {transform: translate3d(0,10%,0) scale3d(1.2,1.2,1.2);}
 }
