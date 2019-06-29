@@ -13,7 +13,7 @@ This react app shows a map of some neighborhood and a list of places from it
 1. Runs the app in the development mode: `npm start` or `yarn start`
 2. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-If you need to test your offline-first service worker locally, build the application (using `npm run build`) and run a simple http server from your build directory. Ex using python 3.7: `python3 -m http.server -d ./build`
+If you need to test your offline-first service worker locally, build the application (using `npm run build`) and run a simple http server from your build directory. Example using python 3.7: `python3 -m http.server -d ./build`
 
 ## Build the application
 
