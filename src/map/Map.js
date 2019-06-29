@@ -1,36 +1,15 @@
 import React, { Component } from 'react'
-import GoogleMapReact from 'google-map-react';
-import {
-  Image
-} from 'semantic-ui-react'
+import { GoogleMap, Marker } from '@react-google-maps/api'
 import PropTypes from 'prop-types'
 
-const PlaceMarker = ({ place, selectedPlace, mouseOver, mouseOut }) => {
-
-  const onMouseOver = () => {
-    if (mouseOver) mouseOver(place);
-  }
-
-  const onMouseOut = () => {
-    if (mouseOut) mouseOut(place);
-  }
-
-  return (
-    <div className={`marker ${selectedPlace && selectedPlace.id === place.id ? 'marker-active' : ''}`}
-      onMouseOut={() => onMouseOut()} onMouseOver={() => onMouseOver()}>
-      <Image src={`${place.categories[0].icon.prefix}44${place.categories[0].icon.suffix}`} circular />
-    </div>
-  );
-}
-
 class Map extends Component {
+
   static propTypes = {
     center: PropTypes.object.isRequired,
     zoom: PropTypes.number,
     places: PropTypes.array.isRequired,
-    selectedPlace: PropTypes.object,
-    onPlaceMouseOver: PropTypes.func,
-    onPlaceMouseOut: PropTypes.func
+    selectPlace: PropTypes.func.isRequired,
+    selectedPlace: PropTypes.object
   }
 
   static defaultProps = {
@@ -45,36 +24,41 @@ class Map extends Component {
 
   }
 
-  onLoad() {
-    const bounds = new window.google.maps.LatLngBounds();
-    for (let place of this.state.places) {
-      bounds.extend(place.location);      
-    }
-    this.state.map.fitBounds(bounds);
+  onLoad(map) {
+    this.setState({
+      map: map
+    })
   }
 
-  onGoogleApiLoaded(maps) {
-    console.log(maps);
-  }
-
-  createMapOptions() {
-    return {
-      styles: [
-        {
-          "featureType": "poi",
-          "stylers": [
-            {
-              "visibility": "off"
-            }
-          ]
+  fitBounds() {
+    const { map } = this.state;
+    if (map) {
+      if (this.props.places.length) {
+        const bounds = new window.google.maps.LatLngBounds();
+        for (let place of this.props.places) {
+          bounds.extend(place.location);
         }
-      ]
+        map.fitBounds(bounds);
+        map.panToBounds(bounds);
+      } else {
+        map.setCenter(this.state.center)
+      }
     }
+  }
+
+  makeMarkerIcon(color) {
+    var markerImage = new window.google.maps.MarkerImage(
+      'http://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|'+ color +
+      '|40|_|%E2%80%A2',
+      new window.google.maps.Size(21, 34),
+      new window.google.maps.Point(0, 0),
+      new window.google.maps.Point(10, 34),
+      new window.google.maps.Size(21,34));
+    return markerImage;
   }
 
   render() {
-    console.log('render');
-    const { places, selectedPlace, onPlaceMouseOver, onPlaceMouseOut } = this.props
+    const { places, selectedPlace, selectPlace } = this.props
 
     let placesOrderedBySelected;
     if (selectedPlace) {
@@ -84,30 +68,44 @@ class Map extends Component {
       placesOrderedBySelected = places;
     }
 
+    this.fitBounds();
+
     return (
-      <div style={{ height: '100vh', width: '100%' }}>
-        <GoogleMapReact
-          defaultCenter={this.props.center}
-          defaultZoom={this.props.zoom}
-          options={this.createMapOptions}
-          onGoogleApiLoaded={(maps) => this.onGoogleApiLoaded(maps)}
-          yesIWantToUseGoogleMapApiInternals={true}
+      <div className="Map-Container">
+        <GoogleMap
+          zoom={this.props.zoom}
+          center={this.props.center}
+          mapContainerStyle={{ height: '100vh', width: '100%' }}
+          onLoad={map => this.onLoad(map)}
+          options={{
+            fullscreenControl: false,
+            streetViewControl: false,
+            mapTypeControl: false,
+            styles: [
+              {
+                "featureType": "poi",
+                "stylers": [{ "visibility": "off" }]
+              }
+            ]
+          }}
         >
           {
-            placesOrderedBySelected.length && placesOrderedBySelected
+            places.length && places
               .map((place) => (
-                <PlaceMarker key={place.name}
-                  lat={place.location.lat}
-                  lng={place.location.lng}
-                  place={place}
-                  selectedPlace={selectedPlace}
-                  mouseOver={(place) => onPlaceMouseOver ? onPlaceMouseOver(place) : null}
-                  mouseOut={(place) => onPlaceMouseOut ? onPlaceMouseOut(place) : null}                  
+                <Marker key={place.id} className="custom-marker"
+                  title={place.name}
+                  position={place.location}
+                  /* icon={`${place.categories[0].icon.prefix}bg_32${place.categories[0].icon.suffix}`} */
+                  icon={this.makeMarkerIcon(selectedPlace && place.id === selectedPlace.id ? 'FFFF24' : '0091ff')}
+                  animation={selectedPlace && place.id === selectedPlace.id ? window.google.maps.Animation.BOUNCE : null}
+                  onClick={() => selectPlace(place)}
+                  zIndex={selectedPlace && place.id === selectedPlace.id ? 100 : null}
                 />
               ))
           }
-        </GoogleMapReact>
-      </div>
+          />
+        </GoogleMap>
+      </div >
     )
   }
 }

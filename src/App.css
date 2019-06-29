@@ -6,23 +6,35 @@ p {
   margin: 5px 0px;  
 }
 
-.marker {
-  background: #2285d0;
-  border-radius: 20px;
-  width: 36px;
-  height: 36px;
-  padding: 4px;
-  box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px !important;
+.Messages {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  width: 400px;
+  padding: 15px;
 }
 
-.marker:hover {
-  cursor: pointer;
+.Map-Container {
+  height: '100vh';
+  width: '100%';
 }
 
-.marker-active {
-  transform-origin: 50% 50%;
-  animation: jump .3s linear alternate infinite;
-  background: #b9ab3f;
+.Place-Item-Name {
+  margin: 0px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.Place-Item-Address {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+@media (min-width: 768px) {  
+  .List-Visible .Map-Container {
+    padding-left: 350px;
+  }  
 }
 
 .Menu-Toggle {
@@ -37,7 +49,62 @@ p {
   width: 40px;
 }
 
-@keyframes jump {
-  0%   {transform: translate3d(0,0,0) scale3d(1,1,1);}
-  100% {transform: translate3d(0,10%,0) scale3d(1.2,1.2,1.2);}
+.List-Visible .Menu-Toggle {
+  margin: 10px 10px 10px 365px !important;
+}
+
+.Map-Detail-Image img {
+  border-radius: 3px 3px 0px 0px;
+}
+
+.Map-Detail {
+  padding: 15px;
+}
+
+.Map-Detail-Name {
+  margin: 0px 0px 0px 0px;
+}
+
+.Map-Detail-Address {
+  margin: 0px 0px 0px 0px;
+  color: rgba(0,0,0,.68);
+}
+
+.Map-Detail-Rating {
+  padding: 10px 0px 0px 0px; 
+}
+
+.Map-Detail-Hours {
+  padding-top: 15px;
+}
+
+.Hours-Title {
+  font-size: 16px;
+}
+
+.Hours-List {
+  list-style: none;
+}
+
+.Hours-Item {
+  font-size: 14px;
+}
+
+.Map-Detail-Contact {
+  padding-top: 15px;
+}
+
+.Contact-Title {
+  font-size: 16px;
+}
+
+.Detail-Reference {  
+    padding: 15px;
+    text-align: right;
+    border-top: 1px solid #eae1e1;
+}
+
+.List-Reference {
+  padding: 15px;
+  text-align: right;
 }
