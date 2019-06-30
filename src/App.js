@@ -61,7 +61,9 @@ class NeighborhoodMapApp extends React.Component {
         }
       });
     }).catch(err => {
-      this.setState({ error: err })
+      this.setState({ 
+        list: {...this.state.list, error: err, loading: false}
+      })
     })
   }
 
