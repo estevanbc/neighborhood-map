@@ -8,12 +8,30 @@ p {
 
 .Messages {
   position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 1;
-  width: 400px;
+  z-index: 1000;
   padding: 15px;
 }
+
+@media (min-width: 768px) {  
+  .Messages {
+    width: 400px;
+    top: 0;
+    right: 0;
+    width: 400px;
+  }
+}
+
+@media (max-width: 768px) {  
+  .Messages {
+    position: absolute;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    width: 300px;
+    margin: auto;
+  }
+}
+
 
 .Map-Container {
   height: '100vh';
